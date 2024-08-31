@@ -1,0 +1,615 @@
+{
+	"info": {
+		"_postman_id": "f51c8567-2dc9-4d4b-ad7e-76d046025882",
+		"name": "Дипломный_проект",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25805718"
+	},
+	"item": [
+		{
+			"name": "Create album",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    pm.collectionVariables.set(\"album_id\", jsonData.response.id);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"uuid": "3e1e21d8-15a0-4468-9312-e18407a2b7ba"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}photos.createAlbum?title=\"My_album\"&access_token={{access_token}}&v={{v}}",
+					"host": [
+						"{{base_url}}photos",
+						"createAlbum"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "\"My_album\""
+						},
+						{
+							"key": "access_token",
+							"value": "{{access_token}}"
+						},
+						{
+							"key": "v",
+							"value": "{{v}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Server address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    pm.collectionVariables.set(\"upload_url\", jsonData.response.upload_url);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}photos.getUploadServer?album_id={{album_id}}&access_token={{access_token}}&v={{v}}",
+					"host": [
+						"{{base_url}}photos",
+						"getUploadServer"
+					],
+					"query": [
+						{
+							"key": "album_id",
+							"value": "{{album_id}}"
+						},
+						{
+							"key": "access_token",
+							"value": "{{access_token}}"
+						},
+						{
+							"key": "v",
+							"value": "{{v}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Photos upload",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    pm.collectionVariables.set(\"server\", jsonData.server);\r",
+							"    pm.collectionVariables.set(\"photos_list\", jsonData.photos_list);\r",
+							"    pm.collectionVariables.set(\"hash\", jsonData.hash);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file1",
+							"type": "file",
+							"src": "NjbWBNRo-/фото1.png"
+						},
+						{
+							"key": "file2",
+							"type": "file",
+							"src": "upqUiApSo/фото2.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{upload_url}}",
+					"host": [
+						"{{upload_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Photos Save",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" \r",
+							" pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    pm.collectionVariables.set(\"owner_id\", jsonData.response[0].owner_id);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}photos.save?album_id={{album_id}}&server={{server}}&photos_list={{photos_list}}&hash={{hash}}&access_token={{access_token}}&v={{v}}",
+					"host": [
+						"{{base_url}}photos",
+						"save"
+					],
+					"query": [
+						{
+							"key": "album_id",
+							"value": "{{album_id}}"
+						},
+						{
+							"key": "server",
+							"value": "{{server}}"
+						},
+						{
+							"key": "photos_list",
+							"value": "{{photos_list}}"
+						},
+						{
+							"key": "hash",
+							"value": "{{hash}}"
+						},
+						{
+							"key": "access_token",
+							"value": "{{access_token}}"
+						},
+						{
+							"key": "v",
+							"value": "{{v}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get photo_list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"photo_id_1\", jsonData.response.items[0].id);\r",
+							"    pm.collectionVariables.set(\"photo_id_2\", jsonData.response.items[1].id);\r",
+							"       });"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}photos.get?photos_list={{photos_list}}&v={{v}}&album_id={{album_id}}",
+					"host": [
+						"{{base_url}}photos",
+						"get"
+					],
+					"query": [
+						{
+							"key": "photos_list",
+							"value": "{{photos_list}}"
+						},
+						{
+							"key": "v",
+							"value": "{{v}}"
+						},
+						{
+							"key": "album_id",
+							"value": "{{album_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comment for photo1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    pm.collectionVariables.set(\"comment_id_1\", jsonData.response);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "message",
+							"value": "Райское место",
+							"type": "text"
+						},
+						{
+							"key": "photo_id",
+							"value": "{{photo_id_1}}",
+							"type": "text"
+						},
+						{
+							"key": "v",
+							"value": "{{v}}",
+							"type": "text"
+						},
+						{
+							"key": "owner_id",
+							"value": "{{owner_id}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}photos.createComment?access_token={{access_token}}",
+					"host": [
+						"{{base_url}}photos",
+						"createComment"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "{{access_token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comment for photo2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Запись параметра в переменную\", function () {\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    pm.collectionVariables.set(\"comment2_id\", jsonData.response);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "message",
+							"value": "Весна!",
+							"type": "text"
+						},
+						{
+							"key": "owner_id",
+							"value": "{{owner_id}}",
+							"type": "text"
+						},
+						{
+							"key": "v",
+							"value": "{{v}}",
+							"type": "text"
+						},
+						{
+							"key": "photo_id",
+							"value": "{{photo_id_2}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}photos.createComment?access_token={{access_token}}",
+					"host": [
+						"{{base_url}}photos",
+						"createComment"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "{{access_token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit comment for photo 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "message",
+							"value": "Ранняя весна!",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}photos.editComment?owner_id={{owner_id}}&access_token={{access_token}}&v={{v}}&comment_id={{comment2_id}}",
+					"host": [
+						"{{base_url}}photos",
+						"editComment"
+					],
+					"query": [
+						{
+							"key": "owner_id",
+							"value": "{{owner_id}}"
+						},
+						{
+							"key": "access_token",
+							"value": "{{access_token}}"
+						},
+						{
+							"key": "v",
+							"value": "{{v}}"
+						},
+						{
+							"key": "comment_id",
+							"value": "{{comment2_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete photo1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}photos.delete?owner_id={{owner_id}}&photo_id={{photo_id_1}}&v={{v}}&access_token={{access_token}}",
+					"host": [
+						"{{base_url}}photos",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "owner_id",
+							"value": "{{owner_id}}"
+						},
+						{
+							"key": "photo_id",
+							"value": "{{photo_id_1}}"
+						},
+						{
+							"key": "v",
+							"value": "{{v}}"
+						},
+						{
+							"key": "access_token",
+							"value": "{{access_token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Album",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}photos.deleteAlbum?album_id={{album_id}}&v={{v}}",
+					"host": [
+						"{{base_url}}photos",
+						"deleteAlbum"
+					],
+					"query": [
+						{
+							"key": "album_id",
+							"value": "{{album_id}}"
+						},
+						{
+							"key": "v",
+							"value": "{{v}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://api.vk.com/method/",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "vk1.a.cvYMYIBMvgyzoP6KJz2ktn1FLVA0maJKP12AlCgFPlsZVWbWtmhSDcehgjWXZs7Glv-DwWyjriDlBFv67j1_Jc_5Z6IaVkX6Vk7ay7NWEc3JpmqdajdpqwNCfAOg1HUSdIV0Zz91WZ2n81X14byZPTl-k4k0TX9xRj79FRLAlA8AjRb2huCjdVzjBTaSIPcwWag1mEwm6c-I3ls1XDJ_qg",
+			"type": "string"
+		},
+		{
+			"key": "v",
+			"value": "5.199",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "51917065",
+			"type": "string"
+		},
+		{
+			"key": "upload_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "server",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hash",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "album_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "photos_list",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "owner_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "comment_id_1",
+			"value": ""
+		},
+		{
+			"key": "comment_id_2",
+			"value": ""
+		},
+		{
+			"key": "photo_id_1",
+			"value": ""
+		},
+		{
+			"key": "photo_id_2",
+			"value": ""
+		},
+		{
+			"key": "comment2_id",
+			"value": ""
+		}
+	]
+}
